@@ -7,329 +7,614 @@
 
   <style>
     :root {
-      --bg:#071024;
-      --card:#0b1220;
-      --muted:#9aa4b2;
-      --glass:rgba(255,255,255,0.03);
-      font-family: 'Inter', system-ui;
+      --bg: #050712;
+      --bg-soft: #070a18;
+      --card: rgba(12, 16, 32, 0.98);
+      --border-subtle: rgba(148, 163, 184, 0.25);
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --accent: #3b82f6;
+      --accent-soft: rgba(59, 130, 246, 0.15);
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.8);
+
+      font-family: -apple-system, BlinkMacSystemFont, system-ui, -apple-system,
+        "SF Pro Text", "SF Pro Display", sans-serif;
       color-scheme: dark;
     }
 
-    * { box-sizing: border-box; margin:0; padding:0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
+      min-height: 100vh;
       background:
-        radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.06), transparent),
-        linear-gradient(180deg,#071024 0%, #081122 100%);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height:100vh;
-      padding:24px;
+        radial-gradient(1200px 600px at 10% 0%, rgba(56, 189, 248, 0.08), transparent),
+        radial-gradient(1000px 600px at 90% 100%, rgba(129, 140, 248, 0.12), transparent),
+        linear-gradient(180deg, var(--bg) 0%, #020617 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      color: var(--text-main);
     }
 
     .container {
-      width:100%;
-      max-width:1100px;
-      margin:0 auto;
+      width: 100%;
+      max-width: 980px;
     }
 
     .card {
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
-      border:1px solid rgba(255,255,255,0.05);
-      border-radius:14px;
-      padding:32px;
-      box-shadow:0 12px 40px rgba(2,6,23,0.55);
-      margin:0 auto;
-      width:100%;
-      max-width:1000px;
+      background: var(--card);
+      border-radius: 24px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      padding: 28px 26px 22px;
+      backdrop-filter: blur(18px);
+      animation: card-in 500ms ease-out;
+    }
+
+    @keyframes card-in {
+      from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Brand / header */
+    .brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 20px;
     }
 
     .brand {
-      display:flex;
-      align-items:center;
-      gap:14px;
-      margin-bottom:12px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
     }
 
-    .logo {
-      width:64px; height:64px;
-      border-radius:14px;
-      background:#000;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:20px;
-      color:white;
-      font-weight:700;
+    .logo-wrap {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #020617;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 8px 26px rgba(15, 23, 42, 0.65);
     }
 
-    h1 { font-size:1.8rem; margin:8px 0 6px; }
-    .subtitle { color:var(--muted); margin-bottom:6px; }
-    .desc { color:var(--muted); margin-bottom:16px; }
+    .logo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
 
-    /* ===== SOCIAL GRID ===== */
+    .brand-text-title {
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      font-size: 1.02rem;
+    }
+
+    .brand-text-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    h1 {
+      font-size: clamp(1.5rem, 2.3vw, 1.8rem);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    /* Social grid */
     .social-grid {
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:18px;
-      margin-top:20px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 6px;
     }
 
     .link-card {
-      display:flex;
-      align-items:center;
-      gap:14px;
-      padding:14px 18px;
-      background:rgba(255,255,255,0.03);
-      border:1px solid rgba(255,255,255,0.04);
-      border-radius:12px;
-      text-decoration:none;
-      color:white;
-      transition:0.2s;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: rgba(15, 23, 42, 0.92);
+      border-radius: 16px;
+      border: 1px solid rgba(15, 23, 42, 0.9);
+      text-decoration: none;
+      color: var(--text-main);
+      overflow: hidden;
+      transition: transform 150ms ease, box-shadow 150ms ease,
+        border 150ms ease, background 150ms ease;
     }
+
+    .link-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 0 0, rgba(59, 130, 246, 0.25), transparent);
+      opacity: 0;
+      transition: opacity 180ms ease;
+      pointer-events: none;
+    }
+
     .link-card:hover {
-      background:rgba(255,255,255,0.06);
-      transform:translateY(-3px);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.9);
+      border-color: rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.98);
+    }
+
+    .link-card:hover::before {
+      opacity: 1;
     }
 
     .icon-wrap {
-      width:48px; height:48px;
-      border-radius:10px;
-      overflow:hidden;
-      display:flex; align-items:center; justify-content:center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #020617;
+      border: 1px solid rgba(15, 23, 42, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+
     .icon-wrap img {
-      width:100%; height:100%; object-fit:cover;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .link-title {
-      font-size:15px;
-      font-weight:700;
+      font-size: 0.9rem;
+      font-weight: 500;
     }
 
-    /* ACTION BUTTONS */
+    .link-note {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    /* Actions */
     .actions {
-      display:flex;
-      gap:12px;
-      margin-top:22px;
-      justify-content:flex-start;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 20px;
     }
+
     .btn-primary {
-      background:linear-gradient(90deg,#06b6d4,#7c3aed);
-      padding:10px 16px;
-      border-radius:10px;
-      border:none;
-      font-weight:700;
-      color:#021018;
-      cursor:pointer;
+      border: none;
+      border-radius: 999px;
+      padding: 9px 18px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(90deg, #3b82f6, #22c55e);
+      color: #020617;
+      box-shadow: 0 10px 28px rgba(56, 189, 248, 0.45);
+      transition: transform 130ms ease, box-shadow 130ms ease,
+        filter 130ms ease;
     }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 14px 34px rgba(56, 189, 248, 0.55);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 8px 20px rgba(56, 189, 248, 0.4);
+    }
+
     .btn-ghost {
-      padding:10px 14px;
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,0.05);
-      background:transparent;
-      color:white;
-      text-decoration:none;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: transparent;
+      color: var(--text-main);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: background 130ms ease, border 130ms ease;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(15, 23, 42, 0.9);
+      border-color: rgba(148, 163, 184, 0.8);
     }
 
     footer {
-      margin-top:16px;
-      text-align:center;
-      color:var(--muted);
-      font-size:13px;
+      margin-top: 18px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
     }
 
-    /* ===== POPUP ===== */
+    /* Popup (coming soon sheet) */
     .popup-overlay {
-      display:none;
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,0.55);
-      backdrop-filter:blur(6px);
-      align-items:center;
-      justify-content:center;
-      z-index:9999;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 40;
     }
+
     .popup-box {
-      background:#0b1220;
-      padding:24px;
-      width:320px;
-      border-radius:14px;
-      text-align:center;
-      border:1px solid rgba(255,255,255,0.07);
-      box-shadow:0 12px 40px rgba(0,0,0,0.6);
+      width: 320px;
+      max-width: 90vw;
+      background: #020617;
+      border-radius: 20px;
+      padding: 18px 18px 16px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.85);
+      animation: popup-in 200ms ease-out;
     }
 
-    /* ===== MOBILE FIX (icon + title proper alignment) ===== */
-    @media (max-width:560px) {
-      .social-grid {
-        grid-template-columns:repeat(2,1fr);
+    @keyframes popup-in {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
       }
-      .link-card {
-        padding:12px 14px;
-      }
-      .icon-wrap {
-        width:42px; height:42px;
-      }
-      .link-title {
-        font-size:14px;
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
       }
     }
 
-    /* Bottom safe-area fix */
-    @supports (padding: max(0px)) {
-      .card {
-        padding-bottom: calc(40px + env(safe-area-inset-bottom));
-        margin-bottom: calc(16px + env(safe-area-inset-bottom));
-      }
+    .popup-title {
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 1rem;
     }
 
-    /* ===== TOAST / SNACKBAR ===== */
+    .popup-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .popup-close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 0.85rem;
+      border: none;
+      background: #111827;
+      color: var(--text-main);
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .popup-close:hover {
+      background: #1f2937;
+    }
+
+    /* Toast */
     .toast {
       position: fixed;
       left: 50%;
-      bottom: 24px;
+      bottom: 20px;
       transform: translateX(-50%) translateY(20px);
-      background: rgba(22,28,36,0.9);
-      color: #e6eef6;
-      padding: 10px 16px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
-      font-weight:600;
-      font-size:14px;
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 0.8rem;
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.95);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 180ms ease, transform 220ms ease;
-      z-index: 10000;
+      transition: opacity 150ms ease, transform 180ms ease;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
+
+    .toast-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+    }
+
     .toast.show {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
       pointer-events: auto;
     }
 
+    /* Responsive */
+    @media (max-width: 720px) {
+      .card {
+        border-radius: 18px;
+        padding: 20px 18px 18px;
+      }
+      .brand-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .social-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 18px;
+      }
+      .social-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .btn-primary,
+      .btn-ghost {
+        width: 100%;
+        justify-content: center;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <main class="card">
-
-      <!-- BRAND -->
-      <div class="brand">
-        <div class="logo"><img src="https://i.postimg.cc/0NT6rb39/Copilot-20251116-203742.png" style="width:100%;height:100%;object-fit:cover;border-radius:14px;"></div>
-        <div>
-          <div style="font-weight:800;">PIAS</div>
-          <div style="font-size:13px;color:var(--muted)">CSE Student • Developer</div>
+      <div class="brand-row">
+        <div class="brand">
+          <div class="logo-wrap">
+            <img src="https://i.postimg.cc/0NT6rb39/Copilot-20251116-203742.png" alt="PIAS avatar">
+          </div>
+          <div>
+            <div class="brand-text-title">PIAS</div>
+            <div class="brand-text-sub">CSE Student • Developer</div>
+          </div>
         </div>
+        <span class="badge">Available for collaboration</span>
       </div>
 
-      <h1>Let's connect and collaborate professionally.</h1>
-      <p class="subtitle">I'm open to projects, discussions, and creative problem-solving.</p>
-      <p class="desc">Use the buttons below to reach out.</p>
+      <h1>Let’s connect and build something meaningful.</h1>
+      <p class="subtitle">Open to projects, ideas, and tech discussions.</p>
+      <p class="desc">Choose any platform below to reach out. I’ll try to respond as soon as possible.</p>
 
-      <!-- SOCIAL GRID -->
       <div class="social-grid">
-
-        <a class="link-card" href="https://facebook.com/pias404" target="_blank">
-          <div class="icon-wrap"><img src="https://i.postimg.cc/X7vQfYxg/5D8s-Gs-HJl-J.png"></div>
-          <div class="link-title">Facebook</div>
-        </a>
-
-        <a class="link-card" href="https://t.me/pias7x" target="_blank">
-          <div class="icon-wrap"><img src="https://i.postimg.cc/KY8zztJG/telegram-6896827-1280.webp"></div>
-          <div class="link-title">Telegram</div>
-        </a>
-
-        <a class="link-card" href="https://github.com/PIAS404" target="_blank">
-          <div class="icon-wrap"><img src="https://i.postimg.cc/25xZ94Sk/Git-Hub-Mark-ea2971cee799.png"></div>
-          <div class="link-title">GitHub</div>
-        </a>
-
-        <a class="link-card" href="https://x.com/pias7x" target="_blank">
-          <div class="icon-wrap"><img src="https://i.postimg.cc/C5BnKbM1/new-2023-twitter-logo-x-icon-design-1017-45418.avif"></div>
-          <div class="link-title">X</div>
-        </a>
-
-        <a class="link-card" href="https://www.tiktok.com/@yourusername" target="_blank">
+        <a class="link-card" href="https://facebook.com/pias404" target="_blank" rel="noopener noreferrer">
           <div class="icon-wrap">
-          <img src="https://i.postimg.cc/CLf83cC3/tik_tok_logo_578229_290.avif">
+            <img src="https://i.postimg.cc/X7vQfYxg/5D8s-Gs-HJl-J.png" alt="Facebook">
           </div>
-          <div class="link-title">Tik Tok</div>
+          <div>
+            <div class="link-title">Facebook</div>
+            <div class="link-note">Connect & message</div>
+          </div>
         </a>
 
-        <a class="link-card" href="#" onclick="popup('Instagram — Coming Soon','Instagram page is under preparation!');return false;">
-          <div class="icon-wrap"><img src="https://i.postimg.cc/CKqGvTTt/instagram-logo-colored.jpg"></div>
-          <div class="link-title">Instagram</div>
+        <a class="link-card" href="https://t.me/pias7x" target="_blank" rel="noopener noreferrer">
+          <div class="icon-wrap">
+            <img src="https://i.postimg.cc/KY8zztJG/telegram-6896827-1280.webp" alt="Telegram">
+          </div>
+          <div>
+            <div class="link-title">Telegram</div>
+            <div class="link-note">Fast replies</div>
+          </div>
         </a>
 
-        <a class="link-card" href="https://open.spotify.com" target="_blank">
-          <div class="icon-wrap"><img src="https://i.postimg.cc/YC9j3Jm9/Spotify-App-Logo.jpg"></div>
-          <div class="link-title">Spotify</div>
+        <a class="link-card" href="https://github.com/PIAS404" target="_blank" rel="noopener noreferrer">
+          <div class="icon-wrap">
+            <img src="https://i.postimg.cc/25xZ94Sk/Git-Hub-Mark-ea2971cee799.png" alt="GitHub">
+          </div>
+          <div>
+            <div class="link-title">GitHub</div>
+            <div class="link-note">Code & projects</div>
+          </div>
         </a>
 
-        <a class="link-card" href="#" onclick="popup('YouTube — Coming Soon','YouTube channel is under preparation!');return false;">
-          <div class="icon-wrap"><img src="https://i.postimg.cc/jSF9w7bD/1000-F-304060171-OUUSKIITl-OLRgn-DI1EFO8e-SZq-OHab6Iq.jpg"></div>
-          <div class="link-title">YouTube</div>
+        <a class="link-card" href="https://x.com/pias7x" target="_blank" rel="noopener noreferrer">
+          <div class="icon-wrap">
+            <img src="https://i.postimg.cc/C5BnKbM1/new-2023-twitter-logo-x-icon-design-1017-45418.avif" alt="X">
+          </div>
+          <div>
+            <div class="link-title">X</div>
+            <div class="link-note">Thoughts & updates</div>
+          </div>
         </a>
 
-        <a class="link-card" href="https://discord.com/users/1092853825423016037" target="_blank">
-          <div class="icon-wrap"><img src="https://i.postimg.cc/brt4pYMQ/discord-logo.jpg"></div>
-          <div class="link-title">Discord</div>
+        <a class="link-card" href="https://www.tiktok.com/@yourusername" target="_blank" rel="noopener noreferrer">
+          <div class="icon-wrap">
+            <img src="https://i.postimg.cc/CLf83cC3/tik_tok_logo_578229_290.avif" alt="TikTok">
+          </div>
+          <div>
+            <div class="link-title">TikTok</div>
+            <div class="link-note">Clips & edits</div>
+          </div>
+        </a>
+
+        <button class="link-card js-soon" type="button"
+          data-title="Instagram — Coming soon"
+          data-message="Instagram profile is being prepared. Stay tuned!">
+          <div class="icon-wrap">
+            <img src="https://i.postimg.cc/CKqGvTTt/instagram-logo-colored.jpg" alt="Instagram">
+          </div>
+          <div>
+            <div class="link-title">Instagram</div>
+            <div class="link-note">Coming soon</div>
+          </div>
+        </button>
+
+        <a class="link-card" href="https://open.spotify.com" target="_blank" rel="noopener noreferrer">
+          <div class="icon-wrap">
+            <img src="https://i.postimg.cc/YC9j3Jm9/Spotify-App-Logo.jpg" alt="Spotify">
+          </div>
+          <div>
+            <div class="link-title">Spotify</div>
+            <div class="link-note">Music & playlists</div>
+          </div>
+        </a>
+
+        <button class="link-card js-soon" type="button"
+          data-title="YouTube — Coming soon"
+          data-message="YouTube channel is under preparation.">
+          <div class="icon-wrap">
+            <img src="https://i.postimg.cc/jSF9w7bD/1000-F-304060171-OUUSKIITl-OLRgn-DI1EFO8e-SZq-OHab6Iq.jpg" alt="YouTube">
+          </div>
+          <div>
+            <div class="link-title">YouTube</div>
+            <div class="link-note">Coming soon</div>
+          </div>
+        </button>
+
+        <a class="link-card" href="https://discord.com/users/1092853825423016037" target="_blank" rel="noopener noreferrer">
+          <div class="icon-wrap">
+            <img src="https://i.postimg.cc/brt4pYMQ/discord-logo.jpg" alt="Discord">
+          </div>
+          <div>
+            <div class="link-title">Discord</div>
+            <div class="link-note">Server / DM</div>
+          </div>
         </a>
 
         <a class="link-card" href="mailto:piasahmmed404@gmail.com">
-          <div class="icon-wrap"><img src="https://i.postimg.cc/mkgh5q6q/gmail-logo-on-transparent-white-background-free-vector.jpg"></div>
-          <div class="link-title">Email</div>
+          <div class="icon-wrap">
+            <img src="https://i.postimg.cc/mkgh5q6q/gmail-logo-on-transparent-white-background-free-vector.jpg" alt="Email">
+          </div>
+          <div>
+            <div class="link-title">Email</div>
+            <div class="link-note">Open mail app</div>
+          </div>
         </a>
-
       </div>
 
-      <!-- BUTTONS -->
       <div class="actions">
-        <!-- Changed: use copyEmail() so we can show toast feedback -->
-        <button id="copyBtn" class="btn-primary" onclick="copyEmail()">Copy Email</button>
-        <a class="btn-ghost" href="tel:+8801985337255">Call</a>
+        <button class="btn-primary" id="copy-email-btn">Copy email</button>
+        <a class="btn-ghost" href="tel:+8801985337255">
+          Call
+        </a>
       </div>
 
-      <footer>Clean, colorful contact page — only essential buttons shown.</footer>
-
+      <footer>Clean, focused contact page — just the essentials.</footer>
     </main>
   </div>
 
-  <!-- POPUP -->
-  <div id="popup" class="popup-overlay">
-    <div class="popup-box">
-      <h2 id="popup-title">Coming Soon</h2>
-      <p id="popup-text">Updating…</p>
-      <button onclick="closePopup()" class="btn-primary" style="margin-top:12px;">Close</button>
+  <!-- Popup -->
+  <div class="popup-overlay" id="popup-overlay">
+    <div class="popup-box" role="alertdialog" aria-modal="true">
+      <div class="popup-title" id="popup-title">Coming soon</div>
+      <div class="popup-text" id="popup-text">Updating…</div>
+      <button class="popup-close" id="popup-close-btn">Close</button>
     </div>
   </div>
 
-  <!-- TOAST -->
-  <div id="toast" class="toast" role="status" aria-live="polite">Email copied to clipboard</div>
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <span class="toast-dot"></span>
+    <span id="toast-text">Email copied</span>
+  </div>
 
   <script>
     const EMAIL = 'piasahmmed404@gmail.com';
+
+    const popupOverlay = document.getElementById('popup-overlay');
+    const popupTitleEl = document.getElementById('popup-title');
+    const popupTextEl = document.getElementById('popup-text');
+    const popupCloseBtn = document.getElementById('popup-close-btn');
+
     const toastEl = document.getElementById('toast');
+    const toastTextEl = document.getElementById('toast-text');
+    const copyBtn = document.getElementById('copy-email-btn');
 
-    function popup(t, m) {
-      document.getElementById("popup-title").innerText = t;
-      document.getElementById("popup-text").innerText = m;
-      document.getElementById("popup").style.display = "flex";
+    let toastTimeout = null;
+
+    function openPopup(title, message) {
+      popupTitleEl.textContent = title;
+      popupTextEl.textContent = message;
+      popupOverlay.style.display = 'flex';
     }
+
     function closePopup() {
-      document.getElementById("popup").style.display = "none";
+      popupOverlay.style.display = 'none';
     }
 
-    // Copy email and show toast exactly like the screenshot
-    async function copyEmail() {
+    popupCloseBtn.addEventListener('click', closePopup);
+    popupOverlay.addEventListener('click', (e) => {
+      if (e.target === popupOverlay) closePopup();
+    });
+
+    function showToast(message, duration = 2200) {
+      toastTextEl.textContent = message;
+
+      toastEl.classList.remove('show');
+      void toastEl.offsetWidth; // restart animation
+      toastEl.classList.add('show');
+
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toastEl.classList.remove('show');
+        toastTimeout = null;
+      }, duration);
+    }
+
+    toastEl.addEventListener('click', () => {
+      toastEl.classList.remove('show');
+      if (toastTimeout) {
+        clearTimeout(toastTimeout);
+        toastTimeout = null;
+      }
+    });
+
+    async function copyEmailToClipboard() {
       try {
         if (navigator.clipboard && navigator.clipboard.writeText) {
           await navigator.clipboard.writeText(EMAIL);
         } else {
-          // fallback for older browsers
           const ta = document.createElement('textarea');
           ta.value = EMAIL;
           ta.setAttribute('readonly', '');
@@ -342,34 +627,20 @@
         }
         showToast('Email copied to clipboard');
       } catch (err) {
-        // on failure, show message (you can change text)
-        showToast('Unable to copy — try manually');
-        console.error('copy failed', err);
+        console.error('Failed to copy email:', err);
+        showToast('Could not copy — please copy manually');
       }
     }
 
-    let toastTimeout = null;
-    function showToast(message, duration = 2200) {
-      if (!toastEl) return;
-      toastEl.innerText = message;
-      // ensure reflow to restart animation if already visible
-      toastEl.classList.remove('show');
-      void toastEl.offsetWidth;
-      toastEl.classList.add('show');
+    copyBtn.addEventListener('click', copyEmailToClipboard);
 
-      if (toastTimeout) clearTimeout(toastTimeout);
-      toastTimeout = setTimeout(() => {
-        toastEl.classList.remove('show');
-        toastTimeout = null;
-      }, duration);
-    }
-
-    // Optional: hide toast if clicked
-    toastEl.addEventListener('click', () => {
-      toastEl.classList.remove('show');
-      if (toastTimeout) { clearTimeout(toastTimeout); toastTimeout = null; }
+    document.querySelectorAll('.js-soon').forEach((el) => {
+      el.addEventListener('click', () => {
+        const title = el.getAttribute('data-title') || 'Coming soon';
+        const message = el.getAttribute('data-message') || 'This link will be available soon.';
+        openPopup(title, message);
+      });
     });
   </script>
-
 </body>
 </html>
